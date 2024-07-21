@@ -1,5 +1,5 @@
 body {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Lucida Console', 'Deja Vu Vera', 'Consolas', 'Input', 'IBM Plex Mono', 'Courier New', Courier, monospace;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,27 +78,28 @@ Toggle button
     height: 0;
 }
 
-.slider {
+.slider, .slider:before {
+    transition: .1s;
     position: absolute;
+}
+
+.slider {
     cursor: pointer;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    transition: .4s;
     border-radius: 34px;
 }
 
 .slider:before {
-    position: absolute;
     content: "";
     height: 26px;
     width: 26px;
     left: 4px;
     bottom: 4px;
     background-color: white;
-    transition: .4s;
     border-radius: 50%;
 }
 
