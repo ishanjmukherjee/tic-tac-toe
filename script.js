@@ -68,14 +68,14 @@ function checkResult() {
     // If there is a winner, display and terminate game
     let roundWon = checkWinner(gameBoard, currentPlayer);
     if (roundWon) {
-        status.textContent = `${currentPlayer} wins! Refresh/toggle to play again.`;
+        status.textContent = `${currentPlayer} wins! Refresh/toggle twice to play again.`;
         gameActive = false;
         return;
     }
 
     // If draw (zero empty cells left but no winner), display and terminate game
     if (!gameBoard.includes('')) {
-        status.textContent = "It's a draw! Refresh/toggle to play again.";
+        status.textContent = "It's a draw! Refresh/toggle twice to play again.";
         gameActive = false;
         return;
     }
