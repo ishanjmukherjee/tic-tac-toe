@@ -95,34 +95,37 @@ function resetGame() {
 
 // Make AI move
 function makeAIMove() {
-    const bestMove = minimax(gameBoard, 'O', -Infinity, Infinity).index;
+    const bestMove = minimax(gameBoard, 'O', -Infinity, Infinity, 0).index;
     const cell = cells[bestMove];
     updateCell(cell, bestMove);
     checkResult();
 }
 
 // Minimax algorithm with alpha-beta pruning
-function minimax(board, player, alpha, beta) {
-    // All currently empty cells are candidates for next move
-    const availableMoves = getEmptyCells(board);
-
-    // Terminal states
-    if (checkWinner(board, 'X')) {
-        return { score: -10 };
-    } else if (checkWinner(board, 'O')) {
-        return { score: 10 };
-    } else if (availableMoves.length === 0) {
+function minimax(board, player, alpha, beta, depth) {
+    // Check for terminal states first
+    // By introducing depth to the terminal state values, quicker wins score
+    // higher, and quicker losses score lower
+    // This fixes subtle bugs where the AI prioritizes blocking the opponent's
+    // line over completing its own
+    if (checkWinner(board, 'O')) {
+        return { score: 10 - depth };
+    } else if (checkWinner(board, 'X')) {
+        return { score: depth - 10 };
+    } else if (getEmptyCells(board).length === 0) {
         return { score: 0 };
     }
 
+    const availableMoves = getEmptyCells(board);
     let bestMove = {};
+
     if (player === 'O') {
         // Maximizing player
         bestMove.score = -Infinity;
         for (let i = 0; i < availableMoves.length; i++) {
             const move = availableMoves[i];
             board[move] = player;
-            const result = minimax(board, 'X', alpha, beta);
+            const result = minimax(board, 'X', alpha, beta, depth + 1);
             board[move] = '';
 
             if (result.score > bestMove.score) {
@@ -130,7 +133,6 @@ function minimax(board, player, alpha, beta) {
                 bestMove.index = move;
             }
 
-            // Alpha-beta pruning
             alpha = Math.max(alpha, bestMove.score);
             if (beta <= alpha) {
                 break;
@@ -142,7 +144,7 @@ function minimax(board, player, alpha, beta) {
         for (let i = 0; i < availableMoves.length; i++) {
             const move = availableMoves[i];
             board[move] = player;
-            const result = minimax(board, 'O', alpha, beta);
+            const result = minimax(board, 'O', alpha, beta, depth + 1);
             board[move] = '';
 
             if (result.score < bestMove.score) {
@@ -150,7 +152,6 @@ function minimax(board, player, alpha, beta) {
                 bestMove.index = move;
             }
 
-            // Alpha-beta pruning
             beta = Math.min(beta, bestMove.score);
             if (beta <= alpha) {
                 break;
