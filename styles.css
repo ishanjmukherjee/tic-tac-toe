@@ -5,34 +5,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    flex-direction: column;
-    justify-content: flex-start;
     /* The tasteful choice according to http://bettermotherfuckingwebsite.com/ */
     background-color: #eeeeee;
-}
-
-.github-link {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.github-link a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-}
-
-.github-link svg {
-    width: 32px;  
-    height: 32px; 
-    flex-shrink: 0;
-    margin-right: 8px;
-}
-
-.github-link a:hover {
-    color: #007bff;
 }
 
 .container {
@@ -104,18 +78,15 @@ Toggle button
     height: 0;
 }
 
-.slider, .slider:before {
-    position: absolute;
-    transition: .1s;
-}
-
 .slider {
+    position: absolute;
     cursor: pointer;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: #ccc;
+    transition: .4s;
     border-radius: 34px;
 }
 
@@ -127,6 +98,7 @@ Toggle button
     left: 4px;
     bottom: 4px;
     background-color: white;
+    transition: .4s;
     border-radius: 50%;
 }
 
