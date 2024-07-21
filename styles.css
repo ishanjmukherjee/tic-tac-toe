@@ -5,7 +5,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    /* The tasteful choice according to http://bettermotherfuckingwebsite.com/ */
+    background-color: #eeeeee;
 }
 
 .container {
