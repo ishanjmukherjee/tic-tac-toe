@@ -28,6 +28,11 @@ function handleCellClick(e) {
     // If legal move, update cell and advance game
     updateCell(e.target, cellIndex);
     checkResult();
+
+    // Make AI move if it's AI mode and it's AI's turn (AI plays as O)
+    if (gameActive && isAIMode && currentPlayer === 'O') {
+        setTimeout(makeAIMove, 500);
+    }
 }
 
 // Update cell (for both human and AI moves)
@@ -86,6 +91,74 @@ function resetGame() {
     gameActive = true;
     status.textContent = "X's turn";
     cells.forEach(cell => cell.textContent = '');
+}
+
+// Make AI move
+function makeAIMove() {
+    const bestMove = minimax(gameBoard, 'O', -Infinity, Infinity).index;
+    const cell = cells[bestMove];
+    updateCell(cell, bestMove);
+    checkResult();
+}
+
+// Minimax algorithm with alpha-beta pruning
+function minimax(board, player, alpha, beta) {
+    // All currently empty cells are candidates for next move
+    const availableMoves = getEmptyCells(board);
+
+    // Terminal states
+    if (checkWinner(board, 'X')) {
+        return { score: -10 };
+    } else if (checkWinner(board, 'O')) {
+        return { score: 10 };
+    } else if (availableMoves.length === 0) {
+        return { score: 0 };
+    }
+
+    let bestMove = {};
+    if (player === 'O') {
+        // Maximizing player
+        bestMove.score = -Infinity;
+        for (let i = 0; i < availableMoves.length; i++) {
+            const move = availableMoves[i];
+            board[move] = player;
+            const result = minimax(board, 'X', alpha, beta);
+            board[move] = '';
+
+            if (result.score > bestMove.score) {
+                bestMove.score = result.score;
+                bestMove.index = move;
+            }
+
+            // Alpha-beta pruning
+            alpha = Math.max(alpha, bestMove.score);
+            if (beta <= alpha) {
+                break;
+            }
+        }
+    } else {
+        // Minimizing player
+        bestMove.score = Infinity;
+        for (let i = 0; i < availableMoves.length; i++) {
+            const move = availableMoves[i];
+            board[move] = player;
+            const result = minimax(board, 'O', alpha, beta);
+            board[move] = '';
+
+            if (result.score < bestMove.score) {
+                bestMove.score = result.score;
+                bestMove.index = move;
+            }
+
+            // Alpha-beta pruning
+            beta = Math.min(beta, bestMove.score);
+            if (beta <= alpha) {
+                break;
+            }
+        }
+    }
+
+    return bestMove;
 }
 
 // Return all empty cells
