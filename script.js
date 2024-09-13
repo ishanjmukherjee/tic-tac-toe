@@ -75,7 +75,7 @@ function checkResult() {
 
     // If draw (zero empty cells left but no winner), display and terminate game
     if (!gameBoard.includes('')) {
-        status.textContent = "It's a draw! Refresh/toggle clear board.";
+        status.textContent = "It's a draw! Refresh/toggle to clear board.";
         gameActive = false;
         return;
     }
